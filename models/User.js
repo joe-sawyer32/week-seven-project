@@ -22,14 +22,8 @@ var userSchema = new Schema({
       },
       actLog: [
         {
-          date: {
-            type: String,
-            required: true
-          },
-          stat: {
-            type: Number,
-            required: true
-          }
+          date: Number,
+          stat: Number
         }
       ]
     }
