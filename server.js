@@ -1,8 +1,9 @@
 const express = require("express");
 const app = express();
-const port = process.env.port || 8080;
+const port = process.env.PORT || 8080;
 const path = require("path");
 const bodyParser = require("body-parser");
+const checkAuth = require(path.join(__dirname, "/checkAuth"));
 
 // MONGOOSE
 const mongoose = require("mongoose");
@@ -50,10 +51,14 @@ app.use(bodyParser.json());
 //     });
 // });
 
-app.get("/api/activities", (req, res) => {
-  User.find({ where: { username: req.user } })
+app.get("/api/activities", checkAuth, (req, res) => {
+  User.findOne({ username: req.decoded })
     .then(foundUser => {
-      res.send(foundUser.activities);
+      var actList = [];
+      actList = foundUser.activities.map(activity => {
+        return activity.actName;
+      });
+      res.send(actList);
     })
     .catch(error => {
       res.status(500).send(error);
