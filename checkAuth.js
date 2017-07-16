@@ -6,7 +6,7 @@ var checkAuth = (req, res, next) => {
   if (token) {
     jwt.verify(token, jwtConfig.secret, (error, decoded) => {
       if (error) {
-        return res.status(401).send("Error in verifying token:", error);
+        return res.status(401).send(error);
       } else {
         req.decoded = decoded.username;
         return next();
